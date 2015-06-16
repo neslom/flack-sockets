@@ -4,12 +4,14 @@
   "description": "Node server for implementing chat functionality with web sockets",
   "main": "index.js",
   "scripts": {
+    "start": "./node_modules/nodemon/bin/nodemon.js index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Markus Olsen",
   "license": "MIT",
   "dependencies": {
     "express": "^4.12.4",
+    "jquery": "^2.1.4",
     "redis": "^0.12.1",
     "socket.io": "^1.3.5"
   },
