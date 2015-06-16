@@ -5,6 +5,12 @@ const redis = require('redis');
 const clientSubscriber = redis.createClient();
 const clientPublisher = redis.createClient();
 
+const mainSocket = io.of('/main');
+
+mainSocket.on('connection', function (socket) {
+  console.log('connected on main socket');
+});
+
 io.on('connection', function (socket) {
   console.log('Client connected to the app');
 
@@ -19,5 +25,9 @@ clientSubscriber.subscribe('main_channel');
 clientSubscriber.on('message', function (channel, message) {
   console.log(message);
   console.log('channel: ' + channel);
-  io.sockets.emit('message', message);
+
+  // I have access to the incoming channel here, so I could
+  // broadcast appropriately
+
+  mainSocket.emit('message', message);
 });
