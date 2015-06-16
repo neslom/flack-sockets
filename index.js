@@ -1,17 +1,9 @@
 const express = require('express');
-const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const io = require('socket.io').listen(process.env.PORT || 3000);
 const path = require('path');
 const redis = require('redis');
 const clientSubscriber = redis.createClient();
 const clientPublisher = redis.createClient();
-
-http.listen(process.env.PORT || 3000, function () {
-  console.log('Up and running on Port 3000');
-});
-
-app.use(express.static('public'));
 
 io.on('connection', function (socket) {
   console.log('Client connected to the app');
@@ -26,4 +18,6 @@ clientSubscriber.subscribe('main_channel');
 
 clientSubscriber.on('message', function (channel, message) {
   console.log(message);
+  console.log('channel: ' + channel);
+  io.sockets.emit('message', message);
 });
