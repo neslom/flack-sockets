@@ -20,14 +20,16 @@ io.on('connection', function (socket) {
   });
 });
 
-clientSubscriber.subscribe('main_channel');
+clientSubscriber.subscribe('main');
 
 clientSubscriber.on('message', function (channel, message) {
   console.log(message);
   console.log('channel: ' + channel);
 
-  // I have access to the incoming channel here, so I could
-  // broadcast appropriately
-
-  mainSocket.emit('message', message);
+  emitMessages(message, channel);
 });
+
+function emitMessages (message, channel) {
+  var clientChannel = io.of('/' + channel);
+  clientChannel.emit('message', message);
+};
