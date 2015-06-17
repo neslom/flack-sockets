@@ -6,16 +6,24 @@ const clientSubscriber = redis.createClient();
 const clientPublisher = redis.createClient();
 
 const mainSocket = io.of('/main');
+var connections = 0;
 
-mainSocket.on('connection', function (socket) {
-  console.log('connected on main socket');
-});
-
+// primary connection to app
 io.on('connection', function (socket) {
-  console.log('Client connected to the app');
+  connections++;
+  console.log(connections + ' clients connected to app');
 
   socket.on('disconnect', function () {
     console.log('Client disconnected');
+    socket.disconnect();
+  });
+});
+
+mainSocket.on('connection', function (socket) {
+  console.log('connected on main socket');
+
+  socket.on('disconnect', function () {
+    console.log('client disconnected on main socket');
     socket.disconnect();
   });
 });
