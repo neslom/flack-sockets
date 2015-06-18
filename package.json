@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "forever start ./node_modules/.bin/nodemon 45.55.184.116:4200"
+    "deploy": "forever start ./node_modules/nodemon/bin/nodemon.js index.js 45.55.184.116:4200"
   },
   "author": "Markus Olsen",
   "license": "MIT",
