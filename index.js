@@ -5,7 +5,6 @@ const redis = require('redis');
 const clientSubscriber = redis.createClient();
 const clientPublisher = redis.createClient();
 
-
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {origins: '*:*'});
@@ -13,7 +12,10 @@ const io = require('socket.io')(server, {origins: '*:*'});
 server.listen(4200);
 
 const mainSocket = io.of('/main');
+const rockSocket = io.of('/genres/rock');
+
 var connections = 0;
+
 // primary connection to app
 io.on('connection', function (socket) {
   connections++;
@@ -35,6 +37,7 @@ mainSocket.on('connection', function (socket) {
 });
 
 clientSubscriber.subscribe('main');
+clientSubscriber.subscribe('rock');
 
 clientSubscriber.on('message', function (channel, message) {
   console.log(message);
@@ -44,6 +47,15 @@ clientSubscriber.on('message', function (channel, message) {
 });
 
 function emitMessages (message, channel) {
+  channel = prependGenresToChannelName(channel);
   var clientChannel = io.of('/' + channel);
   clientChannel.emit('message', message);
+};
+
+function prependGenresToChannelName (channel) {
+  if (channel === 'main') {
+    return 'main';
+  } else {
+    return 'genres/' + channel;
+  }
 };
