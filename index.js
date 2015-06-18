@@ -1,5 +1,4 @@
 const express = require('express');
-//const io = require('socket.io').listen(process.env.PORT || 3000);
 const path = require('path');
 const redis = require('redis');
 const clientSubscriber = redis.createClient();
@@ -17,6 +16,7 @@ const rockSocket = io.of('/genres/rock');
 var connections = 0;
 
 // primary connection to app
+
 io.on('connection', function (socket) {
   connections++;
   console.log(connections + ' clients connected to app');
