@@ -1,13 +1,19 @@
 const express = require('express');
-const io = require('socket.io').listen(process.env.PORT || 3000);
+//const io = require('socket.io').listen(process.env.PORT || 3000);
 const path = require('path');
 const redis = require('redis');
 const clientSubscriber = redis.createClient();
 const clientPublisher = redis.createClient();
 
+
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {origins: '*:*'});
+
+server.listen(4200);
+
 const mainSocket = io.of('/main');
 var connections = 0;
-
 // primary connection to app
 io.on('connection', function (socket) {
   connections++;
