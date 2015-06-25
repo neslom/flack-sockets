@@ -1,3 +1,4 @@
+require('dotenv').load();
 const express = require('express');
 const path = require('path');
 const redis = require('redis');
@@ -65,7 +66,7 @@ function prependGenresToChannelName (channel) {
   }
 };
 
-var clientId = '4cf0c14d2d5b74c42671e0371bbf1ea8';
+var clientId = process.env.SOUNDCLOUD_CLIENT_ID;
 var url = "https://api.soundcloud.com/tracks.json?client_id=" + clientId;
 var defaultUrl = 'https://soundcloud.com/litanymusic/woman-ft-appleby';
 
